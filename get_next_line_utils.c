@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 21:43:32 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/22 13:36:12 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/24 21:31:59 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,79 +17,87 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
-	while (*str != '\0')
-	{
-		str++;
+	while (str[i])
 		i++;
-	}
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	char	*str;
-
-	str = (char *)s;
-	while (*str != (unsigned char)c)
-	{
-		if (*str == '\0')
-			return (NULL);
-		str++;
-	}
-	return (str);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	len1;
 	size_t	len2;
+	int i = 0;
+	int j = 0;
 	char	*mem;
-
-	if (s1 == NULL || s2 == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	mem = (char *)malloc(len1 + len2 + 1);
 	if (mem == NULL)
 		return (NULL);
-	ft_strlcpy(mem, s1, len1 + 1);
-	ft_strlcat(mem, s2, len1 + len2 + 1);
+	while (s1[i])
+	{
+		mem[j] = s1[i];
+		i++;
+		j++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		mem[j] = s2[i];
+		i++;
+		j++;
+	}
+	mem[j] = '\0';
 	return (mem);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+
+char	*ft_strdup(const char *s1)
 {
 	size_t	i;
+	size_t	len;
+	char	*mem;
+	char	*str;
 
+	str = (char *)s1;
+	len = ft_strlen((char *)s1);
+	mem = (char *)malloc(sizeof(char) * (len + 1));
+	if (!mem)
+		return (NULL);
 	i = 0;
-	if (dstsize > 0)
+	while (i < len)
 	{
-		while (i < (dstsize - 1) && src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen((char *)src));
-}
-
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	dst_len;
-	size_t	src_len;
-
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen((char *)src);
-	if (dstsize < dst_len)
-		return (src_len + dstsize);
-	i = 0;
-	while (dst_len + 1 + i < dstsize && src[i] != '\0')
-	{
-		dst[dst_len + i] = src[i];
+		mem[i] = str[i];
 		i++;
 	}
-	dst[dst_len + i] = '\0';
-	return (dst_len + src_len);
+	mem[i] = '\0';
+	return (mem);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*mem;
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	str = (char *)s;
+	if (s == NULL)
+		return (0);
+	if (ft_strlen(s) - start < len)
+		len = ft_strlen(s) - start;
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	mem = (char *) malloc(len + 1);
+	if (mem == NULL)
+		return (NULL);
+	while (i < len && str[i + start] != '\0')
+	{
+		mem[i] = str[i + start];
+		i++;
+	}
+	mem[i] = '\0';
+	return (mem);
 }
