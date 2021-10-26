@@ -5,98 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/17 21:40:24 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/24 22:44:35 by einterdi         ###   ########.fr       */
+/*   Created: 2021/10/25 19:09:35 by einterdi          #+#    #+#             */
+/*   Updated: 2021/10/26 22:11:15 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//External functs: read, malloc, free
 #include "get_next_line.h"
-#include <string.h>
 
-void test(char *str)
+char *ft_logic(char *line, char *buffer)
 {
-	printf("test %p %p %s\n", &str, str, str);
-	str = ft_strdup("111111");
-	printf("test %p %p %s\n", &str, str, str);
+	int i;
+
+	i = 0;
+	while (line[i] != '\n')
+		i++;
+//	printf("Line all: %s\n", line);
+	ft_memcpy(buffer, (line + i + 1), ft_strlen(line) - i - 1);
+//	printf("Buffer: %s\n", buffer);
+	ft_bzero(line + i, ft_strlen(line + i + 1));
+//	printf("Line short: %s\n", line);
+	return (line);
 }
 
-static char *ft_logic(char **sttr)
-{
-	static int finish;
-	char *s;
-	int start = 0;
-	char *str;
 
-//	printf("log %p, %p\n", *sttr, sttr);
-
-	str = *sttr;
-	start = finish;
-	while (str[finish] && str[finish] != '\n')
-		finish++;
-	s = ft_substr(str + start, 0, (finish - start + 1));
-	finish++;
-	if (str[finish] == '\0')
-	{
-		free(*sttr);
-		*sttr = NULL;
-	}
-	return (s);
-}
 
 char *get_next_line(int fd)
 {
-	static char *str;
-	static int tmp;
-	char *buffer;
+	char *line;
+	static char buffer[BUFFER_SIZE + 1];
 	int rd;
-	char *new_line;
-	char buf[1];
-	rd = 1;
+	char *tmp;
 
-	tmp = 0;
-	if (read(fd, buf, 0) < 0 || fd < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 		return (NULL);
-
-	if(!str && !tmp)
-	{
-		tmp = 1;
-		buffer = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	 	if (buffer == NULL)
-	 		return (NULL);
-		while (rd)
-		{
-			if (!str)
-				str = ft_strdup("");
-//			if (!str)
-//				return (NULL);
-			new_line = str;
-//			printf("%p\n", str);
-			rd = read(fd, buffer, BUFFER_SIZE);
-
-			buffer[rd] = '\0';
-			str = ft_strjoin(str, buffer);
-			free(new_line);
-//			if (!str)
-//				return (NULL);
-
-		}
-		free(buffer);
-
-	}
-
-	printf("main1 %p %p %s\n", &str, str, str);
-	test(str);
-	printf("main2 %p %p %s\n", &str, str, str);
-//	printf("%s\n", str);
-	if (str)
-		new_line = ft_logic(&str);
+	rd = 1;
+	line = NULL;
+	if (buffer[0])
+		line = ft_strjoin(line, buffer);
 	else
-		new_line = NULL;
-	// if (*str == '\0')
-	// {
-	// 	free(str);
-	// 	return (NULL);
-	// }
-	return (new_line);
+		line = ft_strdup("");
+	while (rd)
+	{
+		tmp = line;
+		rd = read(fd, buffer, BUFFER_SIZE);
+		buffer[rd] = '\0';
+		line = ft_strjoin(line, buffer);
+		free(tmp);
+		ft_bzero(buffer, BUFFER_SIZE +1);
+		if (ft_strchr(line, '\n') != 0)
+			return (ft_logic(line, buffer));
+	}
+	if (line == NULL && rd == 0)
+		return (line);
+	free(line);
+	return (NULL);
 }
