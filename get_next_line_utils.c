@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 21:43:32 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/26 21:38:44 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/26 23:05:36 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,14 @@
 
 size_t	ft_strlen(const char *str)
 {
-	if (str == NULL)
-		return (0);
 	size_t	i;
 
+	if (str == NULL)
+		return (0);
 	i = 0;
 	while (str[i])
 		i++;
 	return (i);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	str = (char *)s;
-	while (i < n)
-	{
-		str[i] = '\0';
-		i++;
-	}
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -96,47 +82,19 @@ char	*ft_strdup(const char *s1)
 	return (mem);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*mem;
-	char	*str;
 	size_t	i;
 
 	i = 0;
-	str = (char *)s;
-	if (s == NULL)
-		return (0);
-	if (ft_strlen(s) - start < len)
-		len = ft_strlen(s) - start;
-	if (start >= ft_strlen(s))
-		return (ft_strdup(""));
-	mem = (char *) malloc(len + 1);
-	if (mem == NULL)
-		return (NULL);
-	while (i < len && str[i + start] != '\0')
+	if (dstsize > 0)
 	{
-		mem[i] = str[i + start];
-		i++;
+		while (i < (dstsize - 1) && src[i] != '\0')
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	mem[i] = '\0';
-	return (mem);
-}
-
-void	*ft_memcpy(void *dict, const void *str, size_t n)
-{
-	size_t	i;
-	char	*dict2;
-	char	*str2;
-
-	i = 0;
-	dict2 = (char *)dict;
-	str2 = (char *)str;
-	if (str2 == NULL && dict2 == NULL)
-		return (0);
-	while (i < n)
-	{
-		dict2[i] = str2[i];
-		i++;
-	}
-	return (dict);
+	return (ft_strlen((char *)src));
 }
