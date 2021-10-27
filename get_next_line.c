@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 19:09:35 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/26 23:48:17 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/27 20:49:49 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,38 @@ char	*ft_logic(char *line, char *buffer)
 	return (line);
 }
 
+char	*ft_append(char *buffer)
+{
+	char	*line;
+
+	line = NULL;
+	if (buffer[0])
+		return (ft_strjoin_gnl(line, buffer));
+	else
+	{
+		line = ((char *)malloc(sizeof(char) * 1));
+		if (!line)
+			return (NULL);
+		line[0] = '\0';
+		return (line);
+	}
+}
+
 char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	buffer[BUFFER_SIZE + 1];
 	int			rd;
-	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 		return (NULL);
+	line = ft_append(buffer);
 	rd = 1;
-	line = NULL;
-	if (buffer[0])
-		line = ft_strjoin(line, buffer);
-	else
-		line = ft_strdup("");
 	while (rd)
 	{
-		tmp = line;
 		rd = read(fd, buffer, BUFFER_SIZE);
 		buffer[rd] = '\0';
-		line = ft_strjoin(line, buffer);
-		free(tmp);
+		line = ft_strjoin_gnl(line, buffer);
 		buffer[0] = '\0';
 		if (ft_strchr(line, '\n') != 0)
 			return (ft_logic(line, buffer));

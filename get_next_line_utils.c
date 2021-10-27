@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 21:43:32 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/26 23:05:36 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/27 20:53:38 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_strchr(const char *s, int c)
 	return (str);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -57,28 +57,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2 && s2[i])
 		mem[j++] = s2[i++];
 	mem[j] = '\0';
-	return (mem);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	size_t	i;
-	size_t	len;
-	char	*mem;
-	char	*str;
-
-	str = (char *)s1;
-	len = ft_strlen((char *)s1);
-	mem = (char *)malloc(sizeof(char) * (len + 1));
-	if (!mem)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		mem[i] = str[i];
-		i++;
-	}
-	mem[i] = '\0';
+	free(s1);
 	return (mem);
 }
 

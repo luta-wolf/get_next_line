@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 21:43:34 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/26 23:06:11 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/27 20:53:46 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@
 char	*get_next_line(int fd);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *str);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strdup(const char *s1);
+char	*ft_strjoin_gnl(char *s1, char *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 #endif
