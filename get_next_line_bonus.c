@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 19:09:35 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/28 21:38:43 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/28 21:30:18 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_remainder(char **tail)
 {
@@ -70,7 +70,7 @@ char	*ft_reading(int fd, char *line, char **tail, int rd)
 
 char	*get_next_line(int fd)
 {
-	static char	*tail;
+	static char	*tail[256];
 	char		*line;
 	char		buf[1];
 	int			rd;
@@ -78,7 +78,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE < 0 || read(fd, buf, 0) < 0)
 		return (NULL);
 	rd = 1;
-	line = ft_remainder(&tail);
-	line = ft_reading(fd, line, &tail, rd);
+	line = ft_remainder(&tail[fd]);
+	line = ft_reading(fd, line, &tail[fd], rd);
 	return (line);
 }
