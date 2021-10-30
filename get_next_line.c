@@ -6,11 +6,13 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 19:09:35 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/28 21:38:43 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/30 23:29:16 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
+//#include <stdio.h>
 
 char	*ft_remainder(char **tail)
 {
@@ -40,12 +42,13 @@ char	*ft_remainder(char **tail)
 	return (line);
 }
 
-char	*ft_reading(int fd, char *line, char **tail, int rd)
+char	*ft_reading(int fd, char *line, char **tail, char *buffer)
 {
-	char	buffer[BUFFER_SIZE + 1];
 	char	*tmp;
 	char	*pn;
+	int		rd;
 
+	rd = 1;
 	while (rd > 0 && !ft_strchr(line, '\n') && !(*tail))
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
@@ -73,12 +76,23 @@ char	*get_next_line(int fd)
 	static char	*tail;
 	char		*line;
 	char		buf[1];
-	int			rd;
+	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE < 0 || read(fd, buf, 0) < 0)
 		return (NULL);
-	rd = 1;
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buffer == NULL)
+		return (NULL);
 	line = ft_remainder(&tail);
-	line = ft_reading(fd, line, &tail, rd);
+	line = ft_reading(fd, line, &tail, buffer);
 	return (line);
 }
+
+/*int main()
+{
+	int fd;
+
+	fd = open("test.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd));
+	return (0);
+}*/
