@@ -6,7 +6,7 @@
 /*   By: einterdi <einterdi@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 19:09:35 by einterdi          #+#    #+#             */
-/*   Updated: 2021/10/30 23:39:47 by einterdi         ###   ########.fr       */
+/*   Updated: 2021/10/28 21:30:18 by einterdi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,12 @@ char	*ft_remainder(char **tail)
 	return (line);
 }
 
-char	*ft_reading(int fd, char *line, char **tail, char *buffer)
+char	*ft_reading(int fd, char *line, char **tail, int rd)
 {
+	char	buffer[BUFFER_SIZE + 1];
 	char	*tmp;
 	char	*pn;
-	int		rd;
 
-	rd = 1;
 	while (rd > 0 && !ft_strchr(line, '\n') && !(*tail))
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
@@ -74,14 +73,12 @@ char	*get_next_line(int fd)
 	static char	*tail[256];
 	char		*line;
 	char		buf[1];
-	char		*buffer;
+	int			rd;
 
 	if (fd < 0 || BUFFER_SIZE < 0 || read(fd, buf, 0) < 0)
 		return (NULL);
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buffer == NULL)
-		return (NULL);
+	rd = 1;
 	line = ft_remainder(&tail[fd]);
-	line = ft_reading(fd, line, &tail[fd], buffer);
+	line = ft_reading(fd, line, &tail[fd], rd);
 	return (line);
 }
